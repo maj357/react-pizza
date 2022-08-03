@@ -1,8 +1,6 @@
 import React from "react";
 
-function Categories() {
-  const [activeCategory, setActiveCategory] = React.useState(0);
-
+function Categories({ categoryValue, onChangeCategory }) {
   const categories = [
     "Все",
     "Мясные",
@@ -13,20 +11,20 @@ function Categories() {
   ];
 
   // Если мы на событие клика будем вызывать только одну фун-ию, то можно обойтись и анонимной () =>, но если мы помимо этого будем еще в этой фун-кции что то делать, то тогда нужно писать отдельную фун-кцию
-  const onClickCategory = (index) => {
-    setActiveCategory(index);
-  };
+  // const onClickCategory = (index) => {
+  //   setActiveCategory(index);
+  // };
 
   return (
     <div className="categories">
       <ul>
-        {categories.map((value, i) => (
+        {categories.map((categoryName, i) => (
           <li
             key={i}
-            onClick={() => onClickCategory(i)}
-            className={activeCategory === i ? "active" : ""}
+            onClick={() => onChangeCategory(i)}
+            className={categoryValue === i ? "active" : ""}
           >
-            {value}
+            {categoryName}
           </li>
         ))}
       </ul>

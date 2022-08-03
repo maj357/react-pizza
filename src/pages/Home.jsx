@@ -8,10 +8,20 @@ import PizzaSceleton from "../components/PizzaBlock/Placeholder";
 const Home = () => {
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [categoryID, setCategoryId] = React.useState(0);
+  const [sortType, setSortType] = React.useState({
+    name: "популярности",
+    sortProperty: "rating",
+  });
 
   React.useEffect(() => {
+    setIsLoading(true);
     // сырой метод запросо в базы денных через фетч
-    fetch("https://62e787be93938a545bd38733.mockapi.io/pizzas")
+    fetch(
+      `https://62e787be93938a545bd38733.mockapi.io/pizzas?${
+        categoryID > 0 ? `category=${categoryID}` : ""
+      }&sortBy=${sortType.sortProperty}&order=desc`,
+    )
       .then((res) => {
         return res.json();
       })
@@ -19,13 +29,16 @@ const Home = () => {
         setItems(arr);
         setIsLoading(false);
       });
-      window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo(0, 0);
+  }, [categoryID, sortType]);
   return (
     <>
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories
+          categoryValue={categoryID}
+          onChangeCategory={(i) => setCategoryId(i)}
+        />
+        <Sort sortValue={sortType} onChangeSort={(i) => setSortType(i)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
