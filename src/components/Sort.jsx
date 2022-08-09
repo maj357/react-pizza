@@ -3,6 +3,7 @@ import React from "react";
 function Sort({ sortValue, onChangeSort }) {
   // для выпадающего списка
   const [open, setOpen] = React.useState(false);
+  const [addClass, setAddClass] = React.useState("sort__popup");
 
   //для выведение выбранного значения
   // const [selected, setSelected] = React.useState(0);
@@ -16,6 +17,14 @@ function Sort({ sortValue, onChangeSort }) {
   const selectActive = (i) => {
     onChangeSort(i);
     setOpen(false);
+  };
+
+  const clickSort = () => {
+    setAddClass("sort__popup");
+    setTimeout(() => {
+      setAddClass("sort__popup active");
+    }, 10);
+    setOpen(!open);
   };
 
   return (
@@ -34,16 +43,18 @@ function Sort({ sortValue, onChangeSort }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen(!open)}>{sortValue.name}</span>
+        <span onClick={clickSort}>{sortValue.name}</span>
       </div>
       {open && (
-        <div className="sort__popup">
+        <div className={addClass}>
           <ul>
             {list.map((obj, i) => (
               <li
                 key={i}
                 onClick={() => selectActive(obj)}
-                className={sortValue.sortProperty === obj.sortProperty ? "active" : ""}
+                className={
+                  sortValue.sortProperty === obj.sortProperty ? "active" : ""
+                }
               >
                 {obj.name}
               </li>
